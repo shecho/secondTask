@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Grid from "@material-ui/core/Grid";
 import TodoCard from "./components/Card";
+import AddTaskForm from "./components/AddTaskForm";
+import Grid from "@material-ui/core/Grid";
+import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import Button from "@material-ui/core/Button";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -18,18 +19,21 @@ function App() {
     let res = await response.json();
     setTodos(() => res);
   };
-
+  const addTask = (e) => {
+    console.log(e);
+  };
   const deleteTask = (e) => {
     let taskId = parseInt(e.target.parentElement.id);
-    let taskToDelete = todos.filter((todo) => todo.id === taskId);
-    console.log(taskToDelete);
+    let newTodoList = todos.filter((todo) => todo.id !== taskId);
+    setTodos(() => newTodoList);
   };
   return (
     <div className="App">
       <Grid container justify={"center"} style={{ marginBottom: "20px" }}>
-        <Button variant="outlined" color="primary" startIcon={<AddIcon />}>
-          New Task
-        </Button>
+        <Fab color="primary" aria-label="add">
+          <AddIcon onClick={(e) => addTask(e)} />
+        </Fab>
+        <AddTaskForm />
       </Grid>
       <Grid container spacing={4} justify={"center"}>
         {todos.map((todo) => {
