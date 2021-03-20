@@ -1,0 +1,30 @@
+# Get todos by users
+GET https://jsonplaceholder.typicode.com/users/1/todos
+
+###
+
+# get all todos 
+GET https://jsonplaceholder.typicode.com/todos
+
+###
+
+# can Post the todo but you can see it
+POST https://jsonplaceholder.typicode.com/users/1/todos/
+content-type: application/json
+
+{
+    "userId": 1,
+    "id": 999,
+    "title": "testing POST route ",
+    "completed": false
+}
+
+###
+# delete from todos route
+DELETE https://jsonplaceholder.typicode.com/todos/1
+
+###
+
+# Cant delete from this endpint
+DELETE https://jsonplaceholder.typicode.com/users/1/todos/1
+
