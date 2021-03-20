@@ -3,16 +3,14 @@ import "./App.css";
 import TodoCard from "./components/Card";
 import AddTaskForm from "./components/AddTaskForm";
 import NavBar from "./components/NavBar";
-import Grid from "@material-ui/core/Grid";
-import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import Container from "@material-ui/core/Container";
-
+import { Grid, Container, Fab } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 function App() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState({});
   const [showForm, setShowForm] = useState(false);
-
+  const [open, setOpen] = React.useState(false);
   useEffect(() => {
     getTodos();
   }, []);
@@ -48,8 +46,7 @@ function App() {
       },
       body: JSON.stringify(newTodo),
     });
-    console.log(response.status);
-
+    showAlert(response.status);
     // simulate add  to server
     setTodos((prevState) => [...prevState, newTodo]);
   };
@@ -70,12 +67,17 @@ function App() {
     let savedTodos = {
       items: todosLocal,
     };
-    console.log(savedTodos);
     localStorage.setItem("todos", JSON.stringify(savedTodos));
   };
   const deleteLocal = async () => {
     localStorage.clear();
     getTodos();
+  };
+  const showAlert = (status) => {
+    status === 201 ? setOpen(true) : setOpen(false);
+    setTimeout(() => {
+      setOpen(false);
+    }, 1500);
   };
   return (
     <div className="App">
@@ -91,6 +93,13 @@ function App() {
           </Fab>
           {showForm ? (
             <AddTaskForm handleInput={handleInput} addTask={addTask} />
+          ) : (
+            ""
+          )}
+          {open ? (
+            <div>
+              <Alert onClose={() => {}}>Todo Created Successfully</Alert>
+            </div>
           ) : (
             ""
           )}
