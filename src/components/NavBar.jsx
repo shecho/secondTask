@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = (props) => {
+  const { handleSearchTodo } = props;
   const classes = useStyles();
 
   return (
@@ -102,6 +103,7 @@ const NavBar = (props) => {
               <SearchIcon />
             </div>
             <InputBase
+              onChange={(e) => handleSearchTodo(e)}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,

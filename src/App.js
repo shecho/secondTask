@@ -10,11 +10,17 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState({});
   const [showForm, setShowForm] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [searchTodo, SetSearchTodo] = useState("");
   useEffect(() => {
     getTodos();
   }, []);
 
+  const handleSearchTodo = (e) => {
+    e.preventDefault();
+    SetSearchTodo(() => e.target.value);
+    console.log(searchTodo);
+  };
   const getTodos = async () => {
     let localTodos = JSON.parse(localStorage.getItem("todos"));
     if (localTodos) {
@@ -81,7 +87,11 @@ function App() {
   };
   return (
     <div className="App">
-      <NavBar saveLocal={saveLocal} deleteLocal={deleteLocal} />
+      <NavBar
+        handleSearchTodo={handleSearchTodo}
+        saveLocal={saveLocal}
+        deleteLocal={deleteLocal}
+      />
       <Container maxWidth="lg">
         <Grid container justify={"center"} style={{ marginBottom: "20px" }}>
           <Fab
@@ -105,13 +115,15 @@ function App() {
           )}
         </Grid>
         <Grid container spacing={4} justify={"center"}>
-          {todos.map((todo) => {
-            return (
-              <Grid key={todo.id} item xs={12} sm={10} md={6} lg={4}>
-                <TodoCard todo={todo} deleteTask={deleteTask} />
-              </Grid>
-            );
-          })}
+          {todos
+            .filter((tareas) => tareas.title.includes(searchTodo))
+            .map((todo) => {
+              return (
+                <Grid key={todo.id} item xs={12} sm={10} md={6} lg={4}>
+                  <TodoCard todo={todo} deleteTask={deleteTask} />
+                </Grid>
+              );
+            })}
         </Grid>
       </Container>
     </div>
